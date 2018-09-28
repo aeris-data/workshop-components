@@ -17,6 +17,8 @@ import app from "./app.vue";
 import TaskDisplayComponentTest from "./task-display-component-test.vue";
 import TasksEditComponentsTest from "./task-edit-component-test.vue";
 import TasksListComponentsTest from "./tasklist-component-test.vue";
+import TaskListVueComponentsTest from "./tasklist-vue-component-test";
+import TaskDisplayVueComponentTest from "./task-display-vue-component-test.vue";
 
 Vue.use(vueCustomElement);
 Vue.use(Vuex);
@@ -53,6 +55,14 @@ const router = new VueRouter({
     {
       path: "/tasklist-path",
       component: TasksListComponentsTest
+    },
+    {
+      path: "/tasklist-vue-path",
+      component: TaskListVueComponentsTest
+    },
+    {
+      path: "/task-vue-path",
+      component: TaskDisplayVueComponentTest
     }
   ]
 });
@@ -64,6 +74,9 @@ new Vue({
   components: {
     app,
     TaskDisplayComponentTest,
-    TasksListComponentsTest
+    TasksEditComponentsTest,
+    TasksListComponentsTest,
+    TaskListVueComponentsTest,
+    TaskDisplayVueComponentTest
   }
 }).$mount("#app");

@@ -1,9 +1,19 @@
+import TaskDisplayVueComponent from "./task-display-vue-component.vue";
+import TaskListVueComponent from "./task-list-vue-component.vue";
 import TaskDisplayComponent from "./task-display-component.vue";
 import TaskEditComponent from "./task-edit-component.vue";
 import TaskListComponent from "./task-list-component.vue";
 import HelperRegisterModule from "../../helper-register-module";
 
 const tasksComponents = [
+  {
+    vueComponent: TaskDisplayVueComponent,
+    isCustomElement: false
+  },
+  {
+    vueComponent: TaskListVueComponent,
+    isCustomElement: false
+  },
   {
     vueComponent: TaskDisplayComponent,
     isCustomElement: true
