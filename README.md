@@ -1,6 +1,6 @@
-# template-components-vjs
+# workshop-components-vjs
 
->  template components. 
+>  workshop components. 
 
 ## Build Setup
 

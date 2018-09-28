@@ -1,6 +1,6 @@
 {
-  "name": "template-components",
-  "description": "Template for specific components.",
+  "name": "workshop-components",
+  "description": "Components for training",
   "version": "0.0.1",
   "author": "Aeris",
   "private": false,
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "aeris-mixins": "latest",
+    "vee-validate": "^2.0.9",
     "vue": "^2.5.2",
     "vue-custom-element": "1.2.1",
     "vue-i18n": "7.0.5",
