@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 export default {
   state: {
     refreshTaskList: false,
@@ -13,7 +15,24 @@ export default {
     }
   },
 
-  actions: {},
+  actions: {
+    deleteTask({ commit, state }, id) {
+      Vue.http
+        .delete("https://services.aeris-data.fr/todolist/todo/delete/" + id)
+        .then(
+          response => {
+            commit("setRefreshTaskList", true);
+            console.log("success");
+          },
+          response => {
+            let error = response.status;
+            let message = response.statusText;
+            if (!error) message = "Can't connect to the server";
+            console.log("Error " + error + ": " + message);
+          }
+        );
+    }
+  },
 
   getters: {
     getRefreshTaskList(state) {

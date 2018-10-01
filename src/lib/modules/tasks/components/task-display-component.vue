@@ -112,19 +112,7 @@ export default {
       console.log("Error " + error + ": " + message);
     },
     deleteTask() {
-      this.$http
-        .delete(
-          "https://services.aeris-data.fr/todolist/todo/delete/" +
-            this.getTask.id
-        )
-        .then(
-          response => {
-            this.handleDeleteSuccess(response);
-          },
-          response => {
-            this.handleError(response);
-          }
-        );
+      this.$store.dispatch("deleteTask", this.getTask.id);
     },
     handleDeleteSuccess: function(response) {
       this.$store.commit("setRefreshTaskList", true);
