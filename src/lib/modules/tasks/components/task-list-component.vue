@@ -1,11 +1,29 @@
-<template>   
+<i18n>
+    {
+    "en":{
+    "todolist":"Todo list",
+    "add":"Add"
+    },
+    "fr":{
+    "add":"Ajouter",
+    "todolist":"Liste de tâches"
+    }
+    }
+</i18n>
+<template>
    <section aeris-task-component-host>
-      <h2>Todo list</h2>
-      <button name="add" type="button" @click="add">
+      <label v-if="getLang==='fr'" name="lang" type="button" title="En / Fr" @click="switchLang('en')">
+         {{ getLang.toUpperCase() }}
+      </label>
+      <label v-else name="lang" type="button" title="En / Fr" @click="switchLang('fr')">
+         {{ getLang.toUpperCase() }}
+      </label>
+      <h2>{{ $t('todolist') }}</h2>
+      <button :title="$t('add')" name="add" type="button" @click="add">
          <i class="fa fa-plus"/>
       </button>
       <section :class="{active:showNewTask}" aeris-task-component-add>
-         <task-edit-component v-show="showNewTask" />       
+         <task-edit-component v-show="showNewTask"/>
       </section>
       <section aeris-task-component-list>
          <task-display-component v-for="task in tasks" :key="task.id" :task="JSON.stringify(task)"/>
@@ -21,9 +39,13 @@ export default {
       if (value) {
         this.refresh();
       }
+    },
+    getLang(lang) {
+      this.$i18n.locale = lang;
     }
   },
   created: function() {
+    this.$store.commit("setLang", "fr");
     // to catch in the console in order to debug
     console.log("task list component created");
     // call service for data
@@ -38,6 +60,9 @@ export default {
   computed: {
     isRefresh() {
       return this.$store.getters.getRefreshTaskList;
+    },
+    getLang() {
+      return this.$store.getters.getLang;
     }
   },
   methods: {
@@ -53,11 +78,10 @@ export default {
     },
     add() {
       this.showNewTask = !this.showNewTask;
-      console.log(this.showNewTask);
     },
     refresh() {
       this.$http
-        .get("http://localhost:8080/todo/all", {
+        .get("https://services.aeris-data.fr/todolist/todo/all", {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json"
@@ -73,6 +97,9 @@ export default {
         );
       this.showNewTask = false;
       this.$store.commit("setRefreshTaskList", false);
+    },
+    switchLang(lang) {
+      this.$store.commit("setLang", lang);
     }
   }
 };
@@ -85,6 +112,18 @@ export default {
   padding: 20px;
   position: relative;
   border: 1px solid #ccc;
+}
+
+[aeris-task-component-host] h2 {
+  text-align: center;
+}
+
+[aeris-task-component-host] label {
+  cursor: pointer;
+}
+
+[aeris-task-component-host] label:hover {
+  color: #08a5fe;
 }
 
 [aeris-task-component-host] > button {
@@ -104,7 +143,7 @@ export default {
 }
 
 [aeris-task-component-host] > button:hover {
-  background: #307090;
+  background: #08a5fe;
   color: #fff;
 }
 

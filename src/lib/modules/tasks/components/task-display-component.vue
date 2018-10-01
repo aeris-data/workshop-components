@@ -1,3 +1,17 @@
+<i18n>
+   {
+   "en":{
+   "done":"Done",
+   "edit":"Edit",
+   "delete":"Delete"
+   },
+   "fr":{
+   "done":"Faite",
+   "edit":"Editer",
+   "delete":"Supprimer"
+   }
+   }
+</i18n>
 <template>
    <article aeris-task-display-component-host>
       <div v-show="!editMode">
@@ -9,12 +23,12 @@
          </div>
          <aside>
             <input v-model="getTask.done" :id="getTask.id" type="checkbox" @change="taskDoneChanged">
-            <label :for="getTask.id"/>            
+            <label :for="getTask.id" :title="$t('done')"/>
             <div>
-               <button name="edit" type="button" @click="editTask">
+               <button :title="$t('edit')" name="edit" type="button" @click="editTask">
                   <i class="fa fa-edit"/>
                </button>
-               <button name="delete" type="button" @click="deleteTask">
+               <button :title="$t('delete')" name="delete" type="button" @click="deleteTask">
                   <i class="fa fa-trash-o"/>
                </button>
             </div>
@@ -45,12 +59,18 @@ export default {
   watch: {
     task() {
       this.editMode = false;
+    },
+    getLang(lang) {
+      this.$i18n.locale = lang;
     }
   },
 
   computed: {
     getTask() {
       return JSON.parse(this.task);
+    },
+    getLang() {
+      return this.$store.getters.getLang;
     }
   },
 
@@ -67,7 +87,11 @@ export default {
     },
     save() {
       this.$http
-        .put("http://localhost:8080/todo/edit/" + this.getTask.id, this.getTask)
+        .put(
+          "https://services.aeris-data.fr/todolist/todo/edit/" +
+            this.getTask.id,
+          this.getTask
+        )
         .then(
           response => {
             this.handleSuccess(response);
@@ -79,7 +103,6 @@ export default {
     },
     handleSuccess: function(response) {
       console.log("success");
-      //  this.$store.commit("setRefreshTaskList", true);
     },
 
     handleError: function(response) {
@@ -90,7 +113,10 @@ export default {
     },
     deleteTask() {
       this.$http
-        .delete("http://localhost:8080/todo/delete/" + this.getTask.id)
+        .delete(
+          "https://services.aeris-data.fr/todolist/todo/delete/" +
+            this.getTask.id
+        )
         .then(
           response => {
             this.handleDeleteSuccess(response);
@@ -101,7 +127,6 @@ export default {
         );
     },
     handleDeleteSuccess: function(response) {
-      console.log("success");
       this.$store.commit("setRefreshTaskList", true);
     },
     editTask() {
@@ -113,7 +138,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 [aeris-task-display-component-host] {
   padding: 20px;
   margin: 20px 0;
@@ -123,7 +148,6 @@ export default {
 }
 
 [aeris-task-display-component-host] aside {
-  /* width: 200px; */
   display: flex;
   justify-content: space-between;
 }
@@ -138,10 +162,30 @@ export default {
   border: 1px solid #ccc;
   line-height: 20px;
   background: #ddd;
+  border-radius: 5px;
+}
+
+[aeris-task-display-component-host] aside label:hover {
+  cursor: pointer;
+  color: #08a5fe;
+}
+
+[aeris-task-display-component-host] aside input + label {
+  padding: 0 2px;
 }
 
 [aeris-task-display-component-host] aside input:checked + label {
   background: #009060;
+  border-radius: 5px;
+  padding: 0 2px;
+}
+
+[aeris-task-display-component-host] aside input + label::before {
+  content: "\2714";
+  display: block;
+  font-size: 1.8rem;
+  color: #ccc;
+  padding-top: 3px;
 }
 
 [aeris-task-display-component-host] aside input:checked + label::before {
@@ -169,5 +213,9 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
+}
+
+[aeris-task-display-component-host] aside button:hover {
+  color: #08a5fe;
 }
 </style>

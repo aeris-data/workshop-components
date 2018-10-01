@@ -1,13 +1,27 @@
+<i18n>
+   {
+   "en":{
+    "save":"Save",
+    "cancel":"Cancel",
+    "task_title":"Task title"
+   },
+   "fr":{
+   "save":"Enregistrer",
+   "cancel":"Annuler",
+   "task_title":"Titre de la tâche"
+   }
+   }
+</i18n>
 <template>
    <div aeris-task-edit-component-host>
-      <input v-validate="'required|max:10'" v-model="title" :class="{hasError:errors.has('inputTitle')}" name="inputTitle" type="text" placeholder="Task title">
+      <input v-validate="'required|max:10'" v-model="title" :class="{hasError:errors.has('inputTitle')}" :placeholder="$t('task_title')" name="inputTitle" type="text">
       <span>{{ errors.first('inputTitle') }}</span>
       <div>
-         <button name="save" type="button" @click="save">
+         <button :title="$t('save')" name="save" type="button" @click="save">
             <i class="fa fa-save"/>
          </button>
          
-         <button name="cancel" type="button" @click="cancel">
+         <button :title="$t('cancel')" name="cancel" type="button" @click="cancel">
             <i class="fa fa-times"/>
          </button>
       </div>
@@ -37,10 +51,17 @@ export default {
   watch: {
     editedTitle(value) {
       this.title = value;
+    },
+    getLang(lang) {
+      this.$i18n.locale = lang;
     }
   },
 
-  computed: {},
+  computed: {
+    getLang() {
+      return this.$store.getters.getLang;
+    }
+  },
 
   created: function() {
     // to catch in the console in order to debug
@@ -49,9 +70,6 @@ export default {
     // customize validation
     const dictionary = {
       en: {
-        messages: {
-          alpha: () => "Some English Message"
-        },
         custom: {
           inputTitle: {
             max: "Title must not be longer than 10 characters",
@@ -60,9 +78,6 @@ export default {
         }
       },
       fr: {
-        messages: {
-          alpha: () => "Some English Message"
-        },
         custom: {
           inputTitle: {
             max: "La longueur du titre ne doit pas excéder 10 caractères",
@@ -83,9 +98,13 @@ export default {
         } else {
           if (this.editedId) {
             this.$http
-              .put("http://localhost:8080/todo/edit/" + this.editedId, {
-                title: this.title
-              })
+              .put(
+                "https://services.aeris-data.fr/todolist/todo/edit/" +
+                  this.editedId,
+                {
+                  title: this.title
+                }
+              )
               .then(
                 response => {
                   this.handleSuccess(response);
@@ -96,7 +115,9 @@ export default {
               );
           } else {
             this.$http
-              .post("http://localhost:8080/todo/save", { title: this.title })
+              .post("https://services.aeris-data.fr/todolist/todo/save", {
+                title: this.title
+              })
               .then(
                 response => {
                   this.handleSuccess(response);
@@ -110,7 +131,6 @@ export default {
       });
     },
     handleSuccess: function(response) {
-      console.log("success");
       this.$store.commit("setRefreshTaskList", true);
 
       this.title = "";
@@ -129,7 +149,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 [aeris-task-edit-component-host] {
   box-sizing: border-box;
   margin: 0 auto;
@@ -164,6 +184,7 @@ export default {
 
 [aeris-task-edit-component-host] button:hover {
   filter: brightness(80%);
+  color: #08a5fe;
 }
 
 [aeris-task-edit-component-host] .hasError {

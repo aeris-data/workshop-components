@@ -1,7 +1,7 @@
 export default {
   state: {
     refreshTaskList: false,
-    lang: "fr"
+    lang: "en"
   },
 
   mutations: {
