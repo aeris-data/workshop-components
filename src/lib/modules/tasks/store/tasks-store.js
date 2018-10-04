@@ -1,13 +1,9 @@
 export default {
   state: {
-    refreshTaskList: false,
     lang: "en"
   },
 
   mutations: {
-    setRefreshTaskList(state, refreshTaskList) {
-      state.refreshTaskList = refreshTaskList;
-    },
     setLang(state, lang) {
       state.lang = lang;
     }
@@ -16,9 +12,6 @@ export default {
   actions: {},
 
   getters: {
-    getRefreshTaskList(state) {
-      return state.refreshTaskList;
-    },
     getLang(state, lang) {
       return state.lang;
     }

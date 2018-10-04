@@ -3,18 +3,18 @@
    "en":{
     "save":"Save",
     "cancel":"Cancel",
-    "task_title":"Task title"
+    "title":"Task title"
    },
    "fr":{
    "save":"Enregistrer",
    "cancel":"Annuler",
-   "task_title":"Titre de la tâche"
+   "title":"Titre de la tâche"
    }
    }
 </i18n>
 <template>
    <div aeris-task-edit-component-host>
-      <input v-validate="'required|max:10'" v-model="title" :class="{hasError:errors.has('inputTitle')}" :placeholder="$t('task_title')" name="inputTitle" type="text">
+      <input v-validate="'required|max:10'" v-model="title" :class="{hasError:errors.has('inputTitle')}" :placeholder="$t('title')" name="inputTitle" type="text">
       <span>{{ errors.first('inputTitle') }}</span>
       <div>
          <button :title="$t('save')" name="save" type="button" @click="save">
@@ -67,6 +67,7 @@ export default {
     // to catch in the console in order to debug
     console.log("task edit component created");
     this.title = this.editedTitle;
+    this.$i18n.locale="en"
     // customize validation
     const dictionary = {
       en: {
@@ -93,58 +94,10 @@ export default {
   },
   methods: {
     save() {
-      this.$validator.validate().then(result => {
-        if (!result) {
-        } else {
-          if (this.editedId) {
-            this.$http
-              .put(
-                "https://services.aeris-data.fr/todolist/todo/edit/" +
-                  this.editedId,
-                {
-                  title: this.title
-                }
-              )
-              .then(
-                response => {
-                  this.handleSuccess(response);
-                },
-                response => {
-                  this.handleError(response);
-                }
-              );
-          } else {
-            this.$http
-              .post("https://services.aeris-data.fr/todolist/todo/save", {
-                title: this.title
-              })
-              .then(
-                response => {
-                  this.handleSuccess(response);
-                },
-                response => {
-                  this.handleError(response);
-                }
-              );
-          }
-        }
-      });
-    },
-    handleSuccess: function(response) {
-      this.$store.commit("setRefreshTaskList", true);
-
-      this.title = "";
-    },
-
-    handleError: function(response) {
-      let error = response.status;
-      let message = response.statusText;
-      if (!error) message = "Can't connect to the server";
-      console.log("Error " + error + ": " + message);
+      console.log("save edited task")
     },
     cancel() {
-      this.$store.commit("setRefreshTaskList", true);
-      this.$emit("close", true);
+      console.log("cancel task edit")
     }
   }
 };
