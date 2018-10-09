@@ -2,7 +2,7 @@
    <div id="app">
       <ul>
          <li>
-            <router-link to="/task-edit-path">test édition tâche todo</router-link>
+            <router-link to="/task-edit-path">test edit task</router-link>
          </li>
       </ul>
       <div>
