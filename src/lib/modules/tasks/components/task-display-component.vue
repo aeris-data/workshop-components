@@ -75,6 +75,7 @@ export default {
   },
 
   created: function() {
+    this.$i18n.locale="en";
     // to catch in the console in order to debug
     console.log("task component created");
   },
@@ -86,48 +87,10 @@ export default {
       this.save();
     },
     save() {
-      this.$http
-        .put(
-          "https://services.aeris-data.fr/todolist/todo/edit/" +
-            this.getTask.id,
-          this.getTask
-        )
-        .then(
-          response => {
-            this.handleSuccess(response);
-          },
-          response => {
-            this.handleError(response);
-          }
-        );
-    },
-    handleSuccess: function(response) {
-      console.log("success");
-    },
-
-    handleError: function(response) {
-      let error = response.status;
-      let message = response.statusText;
-      if (!error) message = "Can't connect to the server";
-      console.log("Error " + error + ": " + message);
+     console.log("save done state");
     },
     deleteTask() {
-      this.$http
-        .delete(
-          "https://services.aeris-data.fr/todolist/todo/delete/" +
-            this.getTask.id
-        )
-        .then(
-          response => {
-            this.handleDeleteSuccess(response);
-          },
-          response => {
-            this.handleError(response);
-          }
-        );
-    },
-    handleDeleteSuccess: function(response) {
-      this.$store.commit("setRefreshTaskList", true);
+     console.log("delete selected task");
     },
     editTask() {
       this.editMode = true;

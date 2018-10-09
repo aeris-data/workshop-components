@@ -67,6 +67,7 @@ export default {
     // to catch in the console in order to debug
     console.log("task edit component created");
     this.title = this.editedTitle;
+    this.$i18n.locale="en";
     // customize validation
     const dictionary = {
       en: {
@@ -93,57 +94,10 @@ export default {
   },
   methods: {
     save() {
-      this.$validator.validate().then(result => {
-        if (!result) {
-        } else {
-          if (this.editedId) {
-            this.$http
-              .put(
-                "https://services.aeris-data.fr/todolist/todo/edit/" +
-                  this.editedId,
-                {
-                  title: this.title
-                }
-              )
-              .then(
-                response => {
-                  this.handleSuccess(response);
-                },
-                response => {
-                  this.handleError(response);
-                }
-              );
-          } else {
-            this.$http
-              .post("https://services.aeris-data.fr/todolist/todo/save", {
-                title: this.title
-              })
-              .then(
-                response => {
-                  this.handleSuccess(response);
-                },
-                response => {
-                  this.handleError(response);
-                }
-              );
-          }
-        }
-      });
-    },
-    handleSuccess: function(response) {
-      this.$store.commit("setRefreshTaskList", true);
-
-      this.title = "";
-    },
-
-    handleError: function(response) {
-      let error = response.status;
-      let message = response.statusText;
-      if (!error) message = "Can't connect to the server";
-      console.log("Error " + error + ": " + message);
+      console.log("save edited task");
     },
     cancel() {
-      this.$store.commit("setRefreshTaskList", true);
+      console.log("cancel task edit");
       this.$emit("close", true);
     }
   }
