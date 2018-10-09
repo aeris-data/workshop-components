@@ -22,7 +22,7 @@
             </div>
          </div>
          <aside>
-            <input v-model="getTask.done" :id="getTask.id" type="checkbox" @change="taskDoneChanged">
+            <input v-model="getTask.done" :id="getTask.id" type="checkbox" @change="doneStateChanged">
             <label :for="getTask.id" :title="$t('done')"/>
             <div>
                <button :title="$t('edit')" name="edit" type="button" @click="editTask">
@@ -75,22 +75,19 @@ export default {
   },
 
   created: function() {
-    this.$i18n.locale="en";
+    this.$i18n.locale = "en";
     // to catch in the console in order to debug
     console.log("task component created");
   },
   methods: {
-    taskDoneChanged() {
-      console.log(this.getTask);
-      console.log(this.task);
-      console.log("Changed:");
+    doneStateChanged() {
       this.save();
     },
     save() {
-     console.log("save done state");
+      console.log("save done state");
     },
     deleteTask() {
-     console.log("delete selected task");
+      console.log("delete selected task");
     },
     editTask() {
       this.editMode = true;

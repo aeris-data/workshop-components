@@ -67,7 +67,7 @@ export default {
     // to catch in the console in order to debug
     console.log("task edit component created");
     this.title = this.editedTitle;
-    this.$i18n.locale="en";
+    this.$i18n.locale = "en";
     // customize validation
     const dictionary = {
       en: {
