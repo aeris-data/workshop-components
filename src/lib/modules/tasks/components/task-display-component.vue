@@ -84,10 +84,47 @@ export default {
       this.save();
     },
     save() {
-      console.log("save done state");
+      this.$http
+        .put(
+          "https://services.aeris-data.fr/todolist/todo/edit/" +
+            this.getTask.id,
+          this.getTask
+        )
+        .then(
+          response => {
+            this.handleSuccess(response);
+          },
+          response => {
+            this.handleError(response);
+          }
+        );
+    },
+    handleSuccess: function(response) {
+      console.log("success");
+    },
+    handleError: function(response) {
+      let error = response.status;
+      let message = response.statusText;
+      if (!error) message = "Can't connect to the server";
+      console.log("Error " + error + ": " + message);
     },
     deleteTask() {
-      console.log("delete selected task");
+      this.$http
+        .delete(
+          "https://services.aeris-data.fr/todolist/todo/delete/" +
+            this.getTask.id
+        )
+        .then(
+          response => {
+            this.handleDeleteSuccess(response);
+          },
+          response => {
+            this.handleError(response);
+          }
+        );
+    },
+    handleDeleteSuccess: function(response) {
+      this.$store.commit("setRefreshTaskList", true);
     },
     editTask() {
       this.editMode = true;

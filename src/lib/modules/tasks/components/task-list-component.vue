@@ -60,6 +60,9 @@ export default {
   computed: {
     getLang() {
       return this.$store.getters.getLang;
+    },
+    isRefresh() {
+      return this.$store.getters.getRefreshTaskList;
     }
   },
   methods: {
@@ -67,8 +70,32 @@ export default {
       this.showNewTask = !this.showNewTask;
     },
     refresh() {
-      console.log("get tasks");
+      this.$http
+        .get("https://services.aeris-data.fr/todolist/todo/all", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        })
+        .then(
+          response => {
+            this.handleSuccess(response);
+          },
+          response => {
+            this.handleError(response);
+          }
+        );
       this.showNewTask = false;
+      this.$store.commit("setRefreshTaskList", false);
+    },
+    handleSuccess: function(response) {
+      this.tasks = response.data;
+    },
+    handleError: function(response) {
+      let error = response.status;
+      let message = response.statusText;
+      if (!error) message = "Can't connect to the server";
+      console.log("Error " + error + ": " + message);
     },
     switchLang(lang) {
       this.$store.commit("setLang", lang);
